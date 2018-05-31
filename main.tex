@@ -1,0 +1,254 @@
+\newif\ifdraft\drafttrue  % set true to show comments
+\newif\iflastminute\lastminutetrue  % for things to check at the end
+\newif\iflater\laterfalse  % for things to think about after submission
+
+\documentclass[acmsmall,review,anonymous]{acmart}
+\settopmatter{printfolios=true,printccs=false,printacmref=false}
+% % For double-blind review submission, w/ CCS and ACM Reference
+% \documentclass[acmsmall,review,anonymous]{acmart}\settopmatter{printfolios=true}
+% % For single-blind review submission, w/o CCS and ACM Reference (max
+% submission space)
+% \documentclass[acmsmall,review]{acmart}\settopmatter{printfolios=true,printccs=false,printacmref=false}
+% % For single-blind review submission, w/ CCS and ACM Reference
+% \documentclass[acmsmall,review]{acmart}\settopmatter{printfolios=true} % For
+% final camera-ready submission, w/ required CCS and ACM Reference
+% \documentclass[acmsmall]{acmart}\settopmatter{}
+
+
+% % Journal information % Supplied to authors by publisher for camera-ready
+% submission; % use defaults for review submission.
+\acmJournal{PACMPL}
+\acmVolume{1}
+\acmNumber{ICFP} % CONF = POPL or ICFP or OOPSLA
+\acmArticle{1}
+\acmYear{2018}
+\acmMonth{1}
+\acmDOI{} % \acmDOI{10.1145/nnnnnnn.nnnnnnn}
+\startPage{1}
+
+% % Copyright information % Supplied to authors (based on authors' rights
+% management selection; % see authors.acm.org) by publisher for camera-ready
+% submission; % use 'none' for review submission.
+\setcopyright{none}
+\usepackage{algorithm, amsmath, amssymb, verbatim, enumerate, graphicx,
+  centernot, tikz, array, mathtools, bussproofs, stmaryrd, enumitem,
+  stackengine, subcaption}
+\captionsetup{compatibility=false}
+\usepackage{relsize}
+\usepackage{listings}
+\usepackage{proof}
+\usepackage{xspace}
+\usepackage[noend]{algpseudocode}
+\usepackage[capitalize]{cleveref}
+
+\lstset{ language=Caml, basicstyle=\linespread{0.8}\upshape\sffamily,
+keywordstyle=\upshape\sffamily\color{dkblue}, keepspaces=true,
+framexleftmargin=1ex, framexrightmargin=1ex, showstringspaces=true,
+commentstyle=\itshape\rmfamily,
+emph={synth,collapse,perm,squash,normalize,using,ins,del,lens,let,get,put,rquot,lquot},
+emphstyle=\upshape\sffamily\color{dkblue}, 
+columns=fullflexible,
+escapechar=\#,
+mathescape, 
+xleftmargin=1.5em,
+% BCP: I find this distracting:
+% stringstyle=\sffamily\color{dkred},
+}
+\makeatletter
+     \let\lst@oldvisiblespace\lst@visiblespace
+     \def\lst@visiblespace{\,\lst@oldvisiblespace\,}
+\makeatother
+
+% %%%% Macros Colors
+\definecolor{dkblue}{rgb}{0,0.1,0.7}
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{dkred}{rgb}{0.6,0,0}
+\definecolor{dkpurple}{rgb}{0.7,0,0.4}
+\definecolor{olive}{rgb}{0.4, 0.4, 0.0}
+\definecolor{teal}{rgb}{0.0,0.5,0.5}
+\definecolor{orange}{rgb}{0.9,0.6,0.2}
+\definecolor{lightyellow}{RGB}{255, 255, 179}
+\definecolor{lightgreen}{RGB}{170, 255, 220}
+\definecolor{teal}{RGB}{141,211,199}
+\definecolor{darkbrown}{RGB}{121,37,0}
+
+\newcommand{\FINISH}[3]{\ifdraft\textcolor{#1}{[#2: #3]}\fi}
+\newcommand{\bcp}[1]{\FINISH{dkred}{B}{#1}}
+\newcommand{\BCP}[1]{\FINISH{dkred}{B}{\bf #1}}
+\newcommand{\afm}[1]{\FINISH{dkgreen}{A}{#1}}
+\newcommand{\dpw}[1]{\FINISH{dkblue}{D}{#1}} % Toronto Maple Leafs Blue :-)
+\newcommand{\saz}[1]{\FINISH{orange}{SZ}{#1}}
+\newcommand{\SAZ}[1]{\FINISH{orange}{SZ}{#1}}
+\newcommand{\ksf}[1]{\FINISH{teal}{K}{#1}}
+\newcommand{\sam}[1]{\FINISH{dkpurple}{SM}{#1}}
+
+% For Inference Rules
+\newcommand{\Rule}[2]{\infer{#2}{#1}}
+\newcommand{\RuleSide}[3]{\infer[#3]{#2}{#1}}
+% \newcommand{\Axiom}[1]{\Rule{}{#1}}
+
+\newcommand{\wf}[1]{\ensuremath{#1\;\mathsf{wf}}}
+
+% FOR Regular Expression names
+\newcommand{\re}[1]{\ensuremath{\mathtt{#1}}}
+\newcommand{\codefont}[1]{\ensuremath{\mathsf{#1}}}
+\newcommand{\kw}[1]{\textcolor{dkblue}{\ensuremath{\mathsf{#1}}}}
+\newcommand{\collapse}[2]{\ensuremath{\kw{collapse} \; #1 \mapsto #2}}
+\newcommand{\squash}[3]{\ensuremath{\kw{squash} \; #1 \rightarrow #2\; \kw{using} \; #3}}
+\newcommand{\perm}[2]{\ensuremath{\kw{perm}(#1)\; \kw{with}\; #2}}
+\newcommand{\normalize}[3]{\ensuremath{\kw{normalize}(#1, #2, #3)}}
+\newcommand{\eqrel}[1]{\ensuremath{\equiv_{#1}}}
+\newcommand{\sep}{\ensuremath{\ | \ }}
+\newcommand{\canonize}{\ensuremath{\kw{canonize}}}
+\newcommand{\bibtex}{\textsc{Bib}\TeX{}}
+\newcommand{\get}{\ensuremath{\kw{get}}}
+\newcommand{\semicolon}{\ensuremath{\; ; \;}}
+\newcommand{\lput}{\ensuremath{\kw{put}}}
+\newcommand{\create}{\ensuremath{\kw{create}}}
+\newcommand{\const}{\ensuremath{\kw{const}}}
+\newcommand{\swap}{\ensuremath{\kw{swap}}}
+\newcommand{\id}{\ensuremath{\kw{id}}}
+\newcommand{\lquot}{\ensuremath{\kw{lquot}}}
+\newcommand{\rquot}{\ensuremath{\kw{rquot}}}
+\newcommand{\lift}{\ensuremath{\kw{lift}}}
+\newcommand{\bsep}{\ \ \sep{} \ \ }
+
+\newcommand{\Name}{Optometrist\xspace}
+
+\newcommand{\QRESize}{\textbf{QS}}
+\newcommand{\canonizeAndSpecSize}{\textbf{BS}}
+\newcommand{\LensAndSpecSize}{\textbf{NS}}
+
+%\newcommand{\QOpt}{Optician_Q}
+\newcommand{\QOpt}{QRE-enhanced Optician}
+\newcommand{\OpticianRuntime}{\textbf{Optician}}
+\newcommand{\QREOptician}{\textbf{Optician\textsubscript{Q}}}
+\newcommand{\SystemOnOptician}{\textbf{QO}}
+\newcommand{\SystemOnBenchmarks}{\textbf{QQ}}
+\newcommand{\cd}[1]{\lstinline[backgroundcolor=\color{white}]$#1$}
+
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\title{Synthesizing Quotient Lenses: Artifact Evaluation}
+\maketitle
+
+\section{Setup Environment}
+\subsection{Virtual Machine Environment (recommended)}
+To make validation easier, we provide the Artifact Evaluation Committee with a
+virtual machine that has all components installed.  Setup for the virtual
+machine environment detailed below:
+\begin{enumerate}
+\item Install a Virtual Machine Manager (we tested with VirtualBox)
+\item Download our virtual machine image (QuotientLensSynthesis.ova in TODO)
+\item Load our virtual machine from your virtual machine manager
+\end{enumerate}
+
+The user for the virtual machine is solomon, with password quotientsynthesis.
+
+\subsection{Custom Environment}
+If you want to install on a custom environment, certain programs and libraries
+must be installed.  We provide the commands for installation in Lubuntu 17.10
+in parenthesis next to the program or library name.
+
+\begin{enumerate}
+\item Install opam (sudo apt install opam; opam init; eval `opam config env`;
+  opam update)
+\item Switch opam to OCaml 4.06.0 (opam switch 4.06.0; eval `opam config env`)
+\item Install necessary system packages (opam depext conf-m4.1)
+\item Install OCaml's Core version 0.10.0 (opam install core.v0.10.0)
+\item Install OCaml's ppx\_deriving (opam install ppx\_deriving)
+  
+\item Install python-pip (sudo apt install python-pip)
+\item Install Python's EasyProcess (pip install EasyProcess)
+\item Install Python's matplotlib (pip install matplotlib)
+\item Install Python's tk (sudo apt install python-tk)
+\item Install \LaTeX \; (sudo apt install texlive-full)
+
+\item Install the codebase (git clone
+https://github.com/SolomonAduolMaina/boomerang.git)
+ 
+\end{enumerate}
+
+\section{Tool Validation}
+To validate, navigate to the directory the codebase is installed in
+(/home/boomerang in the virtual machine), switch to the eval-pt2
+branch (git checkout eval-pt2), and then run the following commands:
+\begin{enumerate}
+\item make generate-data
+\item make generate-graphs
+\end{enumerate}
+
+After these commands are run, the figures will be present at the following
+locations: 
+\begin{itemize}
+\item Figure 10 will be present at \$/generated-graphs/times.eps
+\item Figure 11(a) will be present at \$/generated-graphs/times\textunderscore
+new.eps
+\item Figure 11(b) will be present at \$/generated-graphs/times\textunderscore
+opt.eps
+\end{itemize}
+
+The command ``make generate-data'' will take about 15 minutes to complete, while
+the command ``make generate-graphs'' will take about 5 seconds to complete.
+
+\subsection{Directory Information}
+The command make generate-data creates five csv files in the
+generated\textunderscore data folder:
+\begin{enumerate}
+  \item
+  The file
+\$/generated\textunderscore data/new\textunderscore comparison\textunderscore
+data.csv contains the running times for synthesizing lenses from the
+examples/synthexamples/new\textunderscore specs folder. This folder contains the
+benchmarks used for the Optician tool where the lenses
+synthesized involved non-trivial canonization i.e. the canonization function was
+not the identity function. This file is used to create Figure 11 (b) when the
+command ``make generate-graphs'' is invoked.
+\item
+The file
+\$/generated\textunderscore data/optician\textunderscore
+comparison\textunderscore data.csv contains the running times of synthesizing
+lenses from the examples/synthexamples/new\textunderscore
+optician\textunderscore specs folder using the Optician tool. These are the
+benchmarks used in the Optician tool, with the lenses being bijective. This file
+is used to create Figure 11 (a) when the command ``make generate-graphs'' is
+invoked.
+\item
+The file
+\$/generated\textunderscore data/new\textunderscore optician\textunderscore
+comparison\textunderscore data.csv contains the running times of synthesizing
+lenses from the examples/synthexamples/new\textunderscore
+optician\textunderscore specs folder using our new tool implement in Boomerang.
+These are the benchmarks used in the Optician tool with the lenses synthesized
+being quotient lenses. This file is used to create Figure 11 (a) when the
+command ``make generate-graphs'' is invoked.
+\item
+The file \$/generated\textunderscore data/size \textunderscore data.csv contains
+the size of the lenses synthesized from the 
+examples/synthexamples/new\textunderscore specs folder.This file is used to
+create Figure 10 when the command ``make generate-graphs'' is invoked.
+\end{enumerate}
+
+In addition to this, the \$/generated\textunderscore data folder contains the
+pre-generated file oo\textunderscore data.csv file which which contains various
+statistics on the lenses synthesized from the Optician benchmarks. This file
+is also used to create Figure 10 when the command ``make generate-graphs is
+invoked. The file was pre-generated since generating it takes a very long time.
+
+The file QuickStart.src provides a quick introduction to Boomerang programming.
+
+Our new tool integrates the Optician lens synthesis tool \cite{optician} into
+the lens programming language \cite{boomerang} and provides an implementation of
+quotient regular expressions (QREs) and QRE lenses. Consequently, the file
+structure of our tool inherits the file structure of each of these two systems.
+
+We encourage the evaluation committee to consult\\
+https://github.com/Miltnoid/BijectiveLensSynthArtifactEvaluation and
+\\http://www.seas.upenn.edu/~harmony/ for more information on Optician and
+Boomerang.
+\bibliographystyle{plain}
+\bibliography{local}
+
+\end{document}

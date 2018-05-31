@@ -1,0 +1,18 @@
+\begin{thebibliography}{1}
+
+\bibitem{boomerang}
+Aaron Bohannon, J.~Nathan Foster, Benjamin~C. Pierce, Alexandre Pilkiewicz, and
+  Alan Schmitt.
+\newblock Boomerang: Resourceful lenses for string data.
+\newblock In {\em Proceedings of the 35th Annual ACM SIGPLAN-SIGACT Symposium
+  on Principles of Programming Languages}, POPL '08. ACM, 2008.
+
+\bibitem{optician}
+Anders Miltner, Kathleen Fisher, Benjamin~C. Pierce, David Walker, and Steve
+  Zdancewic.
+\newblock Synthesizing bijective lenses.
+\newblock In {\em Proceedings of the 45th Annual ACM SIGPLAN-SIGACT Symposium
+  on Principles of Programming Languages}, POPL 2018, 2017.
+\newblock To appear.
+
+\end{thebibliography}
